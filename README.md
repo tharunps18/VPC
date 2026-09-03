@@ -1,77 +1,105 @@
-# Virtual Private Cloud (VPC)
-### Name: THARUN P S
-### Register Number: 212224110055
----
+# Build Your VPC and Launch a Web Server (AWS) 
 
-## AIM
-To study the steps involved in setting up a private cloud using **AWS** or **Microsoft Azure** platforms and explore its core features and services.
+## Objective
 
----
+The objective of this experiment is to understand how to design and configure a basic network infrastructure in AWS using a Virtual Private Cloud (VPC). This lab focuses on creating a VPC with a public subnet, configuring an Internet Gateway and route table, launching an EC2 instance, and hosting a simple web server that can be accessed over the internet.
 
-## PROCEDURE
 
-### **Step 1: Create a Cloud Account**
-- Sign up for an account on **AWS** or **Microsoft Azure**.
-- Complete verification using your **email** and **credit card**.
-- Log in to the **AWS Management Console** or **Azure Portal**.
+## Prerequisites
 
----
+* Basic understanding of cloud computing concepts
+* AWS account or AWS Academy Lab access
+* Web browser with internet connectivity
 
-### **Step 2: Set Up a Virtual Private Cloud (VPC / VNet)**
-- **For AWS:**
-  1. Go to **VPC Dashboard** → Click **Create VPC**.
-  2. Enter a name and specify the **CIDR block** (e.g., `10.0.0.0/16`).
 
-- **For Azure:**
-  1. Navigate to **Virtual Network (VNet)** in Azure Portal.
-  2. Create a VNet by defining **name**, **region**, and **address space**.
+## Tools Used
 
----
+* AWS Management Console
+* Amazon VPC
+* Amazon EC2
+* Internet Gateway
+* Route Table
+* Security Groups
 
-### **Step 3: Configure Subnets and Routing**
-- Create **Public** and **Private Subnets** within the VPC or VNet.
-- Configure **Route Tables** to manage traffic between subnets and the internet.
-- Attach an **Internet Gateway** to the public subnet for external connectivity.
-- Keep private subnets isolated for internal communication.
 
----
+## Tasks Performed
 
-### **Step 4: Create and Launch Instances**
-- Launch an **EC2 Instance** (AWS) or **Virtual Machine** (Azure) within your VPC/VNet.
-- Choose an appropriate **AMI** or **OS Image** (Ubuntu, Amazon Linux, Windows).
-- Assign each instance to the respective subnet (Public/Private).
+### Task 1: Create a VPC
 
----
+Create a new Virtual Private Cloud (VPC) with a private IP address range. The VPC acts as a logically isolated network in AWS where all other resources will be deployed.
 
-### **Step 5: Security Configuration**
-- Create **Security Groups** (AWS) or **Network Security Groups (NSGs)** (Azure).
-- Configure **inbound/outbound rules**:
-  - Allow `SSH (22)` for Linux access.
-  - Allow `RDP (3389)` for Windows access.
-  - Allow `HTTP (80)` for web servers.
-- Ensure private subnet instances are **not directly accessible** from the internet.
+Students should create a VPC with an appropriate CIDR block (for example, 10.0.0.0/16) and assign a meaningful name.
 
----
+### Task 2: Create a Public Subnet
 
-### **Step 6: Storage and Networking**
-- Attach **Elastic Block Store (EBS)** volumes or **Azure Managed Disks**.
-- Configure **Load Balancers** and **NAT Gateways** if needed.
-- Verify DNS, IP allocation, and subnet connectivity.
+Create a subnet inside the VPC to host public resources. Enable auto-assign public IPv4 so that instances launched in this subnet receive a public IP address.
 
----
+The subnet should use a smaller CIDR range (for example, 10.0.1.0/24).
 
-### **Step 7: Testing**
-- Use `ping`, `ssh`, or **RDP** to check connectivity between instances.
-- Test public instance access through the internet.
-- Confirm internal communication between private instances.
+### Task 3: Create and Attach Internet Gateway
 
----
+Create an Internet Gateway (IGW) and attach it to the VPC. This allows communication between resources in the VPC and the internet.
 
-## OUTPUT
+### Task 4: Configure Route Table
 
-![WhatsApp Image 2025-11-01 at 10 13 09_5fc143d9](https://github.com/user-attachments/assets/f919f27b-e02b-46fe-b8ed-051a17e87379)
+Create a route table and add a default route (0.0.0.0/0) pointing to the Internet Gateway. Associate this route table with the public subnet.
 
-## RESULT
-A **private cloud environment** was successfully created using the **AWS/Azure** platform.  
-Core components such as **VPC/VNet**, **Subnets**, **Instances**, and **Security Groups** were configured.  
-The setup was tested and verified for **internal communication** and **external access** as per the configuration.
+This step ensures that traffic from the subnet can reach the internet.
+
+
+### Task 5: Create Security Group
+
+Create a security group to act as a virtual firewall for the EC2 instance. Configure inbound rules to allow:
+
+SSH on port 22
+
+HTTP on port 80
+
+
+### Task 6: Launch EC2 Instance
+
+Launch an EC2 instance inside the public subnet using Amazon Linux 2 AMI and a suitable instance type (t2.micro).
+
+Attach the previously created security group and key pair.
+
+
+### Task 7: Configure Web Server
+
+Install and start a web server (Apache HTTPD) on the EC2 instance using user data or manual commands.
+
+Create a simple HTML page and verify that it can be accessed from a web browser using the public IP address of the instance.---
+
+## Workflow (Student Explanation)
+
+1. Create a Virtual Private Cloud (VPC) with a CIDR block (e.g., 10.0.0.0/16) to establish a logically isolated network in AWS. This forms the foundation where all cloud resources will reside.
+2. Create a public subnet (e.g., 10.0.1.0/24) inside the VPC and enable auto-assign public IP. This allows instances in the subnet to be accessible from the internet.
+3. Create an Internet Gateway (IGW) and attach it to the VPC. Then configure a route table with a default route (0.0.0.0/0) pointing to the IGW and associate it with the public subnet to enable internet access.
+4. Create a Security Group to act as a firewall. Allow inbound traffic for:
+
+SSH (port 22) → for remote access
+
+HTTP (port 80) → for web server access
+
+5. Launch an EC2 instance (Amazon Linux 2, t2.micro) in the public subnet, attach the security group, and configure a web server (Apache). Deploy a simple HTML page and verify access using the instance’s public IP.
+
+
+## Output Screenshots 
+
+### Screenshot 1: VPC and Subnet Details
+
+<img width="1914" height="913" alt="Screenshot 2026-02-24 105947" src="https://github.com/user-attachments/assets/0af1e33d-45ea-4bb1-8534-03e284d05dac" />
+
+
+### Screenshot 2: EC2 Instance Running
+
+<img width="1902" height="911" alt="Screenshot 2026-02-24 111106" src="https://github.com/user-attachments/assets/ee98e4b0-21b1-4eaf-a0b5-523bf008bfd4" />
+
+
+### Screenshot 3: Web Server Output in Browser
+
+<img width="1805" height="804" alt="Screenshot 2026-02-24 111144" src="https://github.com/user-attachments/assets/03f66c23-578e-4daa-8c60-d662e02fdcfb" />
+
+
+## Result 
+
+This experiment successfully demonstrated the creation of a custom VPC and deployment of a public-facing web server in AWS. By configuring networking components such as subnets, route tables, and security groups, and by launching an EC2 instance with a web server, the basic architecture of a cloud-hosted application was understood.
